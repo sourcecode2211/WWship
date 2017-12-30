@@ -1,0 +1,13 @@
+{
+    "linux" : {
+        "arch" : 32,
+        "target" : "deb",
+        "version" : "0.0.1",
+        "title" : "Word & Worship",
+        "comment" : "Multi-lingual worship presentation software",
+        "executable" : "wordandworship",
+        "maintainer" : "J P Xavier <jpxavier11@gmail.com>"
+    }
+}
+
+   

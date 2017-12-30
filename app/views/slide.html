@@ -1,0 +1,414 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-3">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">SELECT ARRANGEMENT</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <div class="label">CURRENT ARRANGEMENTS</div>
+                    <ul style="padding-left: 8px;">
+                        <li class="arrangement-item" ng-repeat="arrangement in svm.arrangements" ng-click="svm.viewarrangement(arrangement.file, arrangement.description)"
+                            ng-class="{'arrangement-active' : arrangement.file === svm.selectedpath}">
+                            <div ng-class="{'tick-icon' : arrangement.file === svm.selectedpath}"></div>{{arrangement.description}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div ng-if="svm.visibilityobj.isArrangementSelected" class="col-4">
+            <div class="tab" style="float: left; min-height: 85vh; width: 100%">
+                <div class="header">
+                    <div class="tab-item " ng-class="{'active': svm.visibilityobj.tabSelected==1}" ng-click="svm.setTab(1)"> ADD SLIDE </div>
+                    <div class="tab-item " ng-class="{'active': svm.visibilityobj.tabSelected==2}" ng-click="svm.setTab(2)"> CURRENT SLIDES </div>
+                </div>
+                <div class="content">
+                    <div ng-if="svm.visibilityobj.isArrangementSelected && svm.visibilityobj.tabSelected == 2" id="currentslides" 
+                    class="tab-content active"
+                    style="padding: 10% 3% 5% 3%;overflow-y: auto;overflow-x: hidden;">
+                        <div ng-if="svm.slides==undefined || svm.slides.length == 0" style="padding: 30px 40px;">No slides added to this Arrangement</div>
+                            <div ng-if="svm.slides.length != 0" style="padding: 0px 15px;">{{svm.slides.length}} slide(s) in arrangement</div><br/>
+                            <div ng-if="svm.slides.length > 0" ng-repeat="slide in svm.slides track by $index" class="row" 
+                                style="border-bottom: 1px solid #333; margin-bottom: 10px;padding-bottom: 10px;">
+                                <div class="col-4">
+                                    <img ng-src="assets/slide-templates/Slide{{slide.slidetype}}.png" 
+                                    ng-click="svm.openSlide($index)" 
+                                    ng-class="{'img-active' : svm.visibilityobj.GUID === slide.uuid}"/>
+                                </div>
+                                <div class="col-8">
+                                    <div class="slide-item" id="{{$index}}" ng-click="svm.openSlide($index)" 
+                                    ng-class="{'song-item-selected' : svm.selecteditem === $index }"
+                                        style="font-size: 1.5rem;font-weight: 300;padding-left:30px;">{{slide.slidetitle}}</div>
+                                    <div ng-if="slide.slidetype ===1">
+                                        <ul style="list-style-type: circle;padding-left:30px;">
+                                            <li ng-repeat="bullet in slide.slidebullets track by $index" >{{bullet}}</li>
+                                        </ul>
+                                    </div>
+                                    <div ng-if="slide.slidetype ===2">
+                                        <ol style="padding-left:30px;" >
+                                            <li ng-repeat="bullet in slide.slidebullets track by $index" >{{bullet}}</li>
+                                        </ol>
+                                    </div>
+                                    <div ng-if="slide.slidetype ===3">
+                                        <img ng-src="{{slide.slideimage}}" style="height:50px!important;width:50px!important;"/>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div ng-if="svm.visibilityobj.isArrangementSelected && svm.visibilityobj.tabSelected == 1" id="addslide" class="tab-content active"
+                        style="padding: 10% 3% 5% 3%;overflow-y: auto;">
+                        <div style="padding: 0px 15px;">Select Slide Layout</div><br/>
+                        <div class="row">
+                            <div class="col-5">
+                                <img src="assets/slide-templates/Slide1.png" 
+                                ng-class="{'img-active' : svm.slidelayout === 1 && svm.visibilityobj.GUID ==='ABCDEF' }" ng-click="svm.selectedslide(1)"
+                                /><br/>Title + Unordered List
+                            </div>
+                            <div class="col-5">
+                                <img src="assets/slide-templates/Slide2.png" 
+                                ng-class="{'img-active' : svm.slidelayout === 2 && svm.visibilityobj.GUID ==='ABCDEF' }" ng-click="svm.selectedslide(2)"
+                                /><br/>Title + Ordered List
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- <div class="col-5">
+                                <img src="assets/slide-templates/Slide3.png" 
+                                ng-class="{'img-active' : svm.slidelayout === 3 && svm.visibilityobj.GUID ==='ABCDEF' }" ng-click="svm.selectedslide(3)"
+                                /><br/>Title + Image
+                            </div> -->
+                            <div class="col-5">
+                                <img src="assets/slide-templates/Slide5.png" 
+                                ng-class="{'img-active' : svm.slidelayout === 5 && svm.visibilityobj.GUID ==='ABCDEF' }" ng-click="svm.selectedslide(5)"
+                                /><br/>Title/Text Only (Bottom)
+                            </div>
+                            <div class="col-5">
+                                <img src="assets/slide-templates/Slide4.png" 
+                                ng-class="{'img-active' : svm.slidelayout === 4 && svm.visibilityobj.GUID ==='ABCDEF' }" ng-click="svm.selectedslide(4)"
+                                /><br/>Title/Text Only (Top)
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-5">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5" ng-if="svm.visibilityobj.mode === 0">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">SLIDE CONTENTS</div>
+                <div class="content" style="padding: 2% 5%;overflow-y: auto;">
+                    <div ng-if="svm.slidelayout === 1">
+                        <div class="label">
+                            <h1>Title + Unordered List</h1>
+                        </div>
+                        <div class="label">
+                            <h3>Enter each Bullet point in a separate line in the text area below</h3>
+                        </div><br/>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" placeholder="Enter Slide Title..">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Bullet Points</div>
+                            </div>
+                            <div class="col-10">
+                                <textarea style="width:100%; min-width:100%; height:250px; min-height:250px" id="bullets"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(1)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.addtoarrangement(1)">Add to Arrangement</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 2">
+                        <div class="label">
+                            <h1>Title + Ordered List</h1>
+                        </div>
+                        <div class="label">
+                            <h3>Enter each Bullet point in a separate line in the text area below</h3>
+                        </div><br/>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" placeholder="Enter Slide Title..">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Bullet Points</div>
+                            </div>
+                            <div class="col-10">
+                                <textarea style="width:100%; min-width:100%; height:250px; min-height:250px" id="bullets"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(2)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.addtoarrangement(2)">Add to Arrangement</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 3">
+                        <div class="label">
+                            <h1>Title + Image</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" placeholder="Enter Slide Title..">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Image URL</div>
+                            </div>
+                            <div class="col-7">
+                                <input disabled style="width:100%; min-width:100%" id="image" placeholder="URL ...">
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-default" ng-click='svm.select()' style="padding: 0px 25px; height: 24px; width:100%">Set path</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview()">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.addtoarrangement(3)">Add to Arrangement</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 4">
+                        <div class="label">
+                            <h1>Title Only</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" placeholder="Enter Slide Title..">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(4)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.addtoarrangement(4)">Add to Arrangement</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 5">
+                        <div class="label">
+                            <h1>Title Only</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" placeholder="Enter Slide Title..">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(5)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.addtoarrangement(5)">Add to Arrangement</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5" ng-if="svm.visibilityobj.mode === 1">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">EDIT SLIDE CONTENTS</div>
+                <div class="content" style="padding: 2% 5%;overflow-y: auto;">
+                    <div ng-if="svm.slidelayout === 1">
+                        <div class="label">
+                            <h1>Title + Unordered List</h1>
+                        </div>
+                        <div class="label">
+                            <h3>Enter each Bullet point in a separate line in the text area below</h3>
+                        </div><br/>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" ng-model="svm.title">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Bullet Points</div>
+                            </div>
+                            <div class="col-10">
+                                <textarea style="width:100%; min-width:100%; height:250px; min-height:250px" ng-model="svm.bullets" id="bullets"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(1)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.updatearrangement(1)">Update Arrangement</button>
+                            </div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.deleteslide()">Delete Slide</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 2">
+                        <div class="label">
+                            <h1>Title + Ordered List</h1>
+                        </div>
+                        <div class="label">
+                            <h3>Enter each Bullet point in a separate line in the text area below</h3>
+                        </div><br/>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" ng-model="svm.title">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px" >Bullet Points</div>
+                            </div>
+                            <div class="col-10">
+                                <textarea style="width:100%; min-width:100%; height:250px; min-height:250px" id="bullets" ng-model="svm.bullets"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(2)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.updatearrangement(2)">Update Arrangement</button>
+                            </div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.deleteslide()">Delete Slide</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 3">
+                        <div class="label">
+                            <h1>Title + Image</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" ng-model="svm.title" >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Image URL</div>
+                            </div>
+                            <div class="col-7">
+                                <input disabled style="width:100%; min-width:100%" id="edit-image" placeholder="URL ...">
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-default" ng-click='svm.select()' style="padding: 0px 25px; height: 24px; width:100%">Set path</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview()">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.updatearrangement(3)">Update Arrangement</button>
+                            </div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.deleteslide()">Delete Slide</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 4">
+                        <div class="label">
+                            <h1>Title Only</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" ng-model="svm.title" placeholder="Enter Slide Title..">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(4)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.updatearrangement(4)">Update Arrangement</button>
+                            </div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.deleteslide()">Delete Slide</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="svm.slidelayout === 5">
+                        <div class="label">
+                            <h1>Title Only</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                            </div>
+                            <div class="col-10">
+                                <input style="width:100%; min-width:100%" id="title" ng-model="svm.title" placeholder="Enter Slide Title..">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.preview(5)">Preview Slide</button>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.updatearrangement(5)">Update Arrangement</button>
+                            </div>
+                            <div class="col-3">
+                                <button style="margin: 0 5px; padding: 2px 10px;" ng-click="svm.deleteslide()">Delete Slide</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="snackbar"></div>
+</div>

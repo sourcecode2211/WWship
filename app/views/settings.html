@@ -1,0 +1,397 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-3">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">DISPLAY SETTINGS</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <ul>
+                        <li class="arrangement-item"
+                        ng-click="svm.view(0)"
+                        ng-class="{'arrangement-active' : svm.selection === 0}">
+                        <div ng-class="{'tick-icon' : svm.selection === 0}"></div>General Settings</li>
+                        <li class="arrangement-item"
+                        ng-click="svm.view(1)"
+                        ng-class="{'arrangement-active' : svm.selection === 1}">
+                        <div ng-class="{'tick-icon' : svm.selection === 1}"></div>Scripture Settings</li>
+                        <li class="arrangement-item"
+                        ng-click="svm.view(2)"
+                        ng-class="{'arrangement-active' : svm.selection === 2}">
+                        <div ng-class="{'tick-icon' : svm.selection === 2}"></div>Lyrics Settings</li>
+                        <li class="arrangement-item"
+                        ng-click="svm.view(3)"
+                        ng-class="{'arrangement-active' : svm.selection === 3}">
+                        <div ng-class="{'tick-icon' : svm.selection === 3}"></div>Marquee Settings</li>
+                        <!-- <li class="arrangement-item"
+                        ng-click="svm.view(4)"
+                        ng-class="{'arrangement-active' : svm.selection === 4}">
+                        <div ng-class="{'tick-icon' : svm.selection === 4}"></div>Slide Settings</li> -->
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div ng-if="svm.selection==0" class="col-9">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">GENERAL SETTINGS DETAIL</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Default Language&nbsp;&nbsp;</div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.general.language}}</div>
+                            </div>
+                            <div class="col-3">
+                                <select id="language" style="min-width: 100%;">
+                                    <option value="english" selected>ENGLISH</option>
+                                    <option value="tamil">TAMIL</option>
+                                    <option value="hindi">HINDI</option>
+                                    <option value="kannada">KANNADA</option>
+                                    <option value="telugu">TELUGU</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Default Bible Translation&nbsp;&nbsp;</div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.general.bibleversion}}</div>
+                            </div>
+                            <div class="col-3">
+                                <select id="translation" style="min-width: 100%;">
+                                    <option value="niv" selected>ENGLISH - NIV</option>
+                                    <option value="newtamil">TAMIL - ERV</option>
+                                    <option value="kjv">ENGLISH - KJV</option>
+                                    <option value="kannada">KANNADA</option>
+                                    <option value="hindi">HINDI</option>
+                                    <option value="telugu">TELUGU</option>
+                                    <option value="nkjv">ENGLISH - NKJV</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-4">
+                                <button ng-click="svm.savegeneral()">Save Settings</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>  
+        <div ng-if="svm.selection==1" class="col-9">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">SCRIPTURE SETTINGS DETAIL</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Background Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.scripture.bgcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="scripture-bgcolor" value="#000000">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.scripture.fontcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="scripture-fontcolor" value="#FFFFFF">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Size (Verse)&nbsp;&nbsp;<sup>*</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.scripture.fontsize}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="scripture-fontsize-verse" type="number" value="80" min="60" max="100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Size (Reference)&nbsp;&nbsp;<sup>*</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.scripture.fontReference}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="scripture-fontsize-reference" type="number" value="40" min="30" max="60">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Text Transformation (English only)&nbsp;&nbsp;<sup>^</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.scripture.textTransform}}</div>
+                            </div>
+                            <div class="col-6">
+                                <label class="label">CAPITALIZE</label><input type="radio" name="sc-text" onclick="document.getElementById('result').value = 'capitalize'">
+                                <label class="label">lower</label><input type="radio" name="sc-text" onclick="document.getElementById('result').value = 'lower'">
+                                <label class="label">none</label><input type="radio" name="sc-text" checked onclick="document.getElementById('result').value = 'none'">
+                                <input type="text" id="result" type="hidden" value="none" disabled/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-4">
+                                <button ng-click="svm.savescripture()">Save Settings</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <sup>#</sup>&nbsp;&nbsp;&nbsp;Enter a Hexadecimal value else will be defaulted to black(for background)
+                            and white(for foreground)
+                        </div>
+                        <div class="row">
+                            <sup>*</sup>&nbsp;&nbsp;&nbsp;Defaulted to 80 and 40px respectively
+                        </div>
+                        <div class="row">
+                            <sup>^</sup>&nbsp;&nbsp;&nbsp;Text Transformation will work for English only
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div ng-if="svm.selection==2" class="col-9">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">LYRICS SETTINGS DETAIL</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Background Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.lyrics.bgcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="lyrics-bgcolor" value="#000000">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.lyrics.fontcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="lyrics-fontcolor" value="#FFFFFF">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Size (Verse)&nbsp;&nbsp;<sup>*</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.lyrics.fontsize}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="lyrics-fontsize-verse" type="number" value="100" min="60" max="200">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Text Transformation (English only)&nbsp;&nbsp;<sup>^</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.lyrics.textTransform}}</div>
+                            </div>
+                            <div class="col-6">
+                                <label class="label">Capitalize</label><input type="radio" name="lyrics-text" onclick="document.getElementById('result').value = 'capitalize'">
+                                <label class="label">lower</label><input type="radio" name="lyrics-text" onclick="document.getElementById('result').value = 'lowercase'">
+                                <label class="label">UPPER</label><input type="radio" name="lyrics-text" onclick="document.getElementById('result').value = 'uppercase'">
+                                <label class="label">none</label><input type="radio" name="lyrics-text" checked onclick="document.getElementById('result').value = 'none'">
+                                <input type="text" id="result" type="hidden" value="none" disabled/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-4">
+                                <button ng-click="svm.savelyrics()">Save Settings</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <sup>#</sup>&nbsp;&nbsp;&nbsp;Enter a Hexadecimal value else will be defaulted to black(for background)
+                            and white(for foreground)
+                        </div>
+                        <div class="row">
+                            <sup>*</sup>&nbsp;&nbsp;&nbsp;Defaulted to 80px respectively
+                        </div>
+                        <div class="row">
+                            <sup>^</sup>&nbsp;&nbsp;&nbsp;Text Transformation will work for English only
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div ng-if="svm.selection==3" class="col-9">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">MARQUEE SETTINGS DETAIL</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Background Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.marquee.bgcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="marquee-bgcolor" value="#000000">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.marquee.fontcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="marquee-fontcolor" value="#FFFFFF">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Size (Verse)&nbsp;&nbsp;<sup>*</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.marquee.fontsize}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="marquee-fontsize" type="number" value="80" min="60" max="100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Text Transformation (English only)&nbsp;&nbsp;<sup>^</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.lyrics.textTransform}}</div>
+                            </div>
+                            <div class="col-6">
+                                <label class="label">Capitalize</label><input type="radio" name="lyrics-text" onclick="document.getElementById('result').value = 'capitalize'">
+                                <label class="label">lower</label><input type="radio" name="lyrics-text" onclick="document.getElementById('result').value = 'lowercase'">
+                                <label class="label">UPPER</label><input type="radio" name="lyrics-text" onclick="document.getElementById('result').value = 'uppercase'">
+                                <label class="label">none</label><input type="radio" name="lyrics-text" checked onclick="document.getElementById('result').value = 'none'">
+                                <input type="text" id="result" type="hidden" value="none" disabled/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-4">
+                                <button ng-click="svm.savemarquee()">Save Settings</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <sup>#</sup>&nbsp;&nbsp;&nbsp;Enter a Hexadecimal value else will be defaulted to black(for background)
+                            and white(for foreground)
+                        </div>
+                        <div class="row">
+                            <sup>*</sup>&nbsp;&nbsp;&nbsp;Defaulted to 80px respectively
+                        </div>
+                        <div class="row">
+                            <sup>^</sup>&nbsp;&nbsp;&nbsp;Text Transformation will work for English only
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div ng-if="svm.selection==4" class="col-9">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">SLIDE SETTINGS DETAIL</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Background Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.marquee.bgcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="marquee-bgcolor" value="#000000" class="jscolor {position:'right'}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="label" style=" width:100%; display:block;text-align:right; font-size:14px">Font Color&nbsp;&nbsp;<sup>#</sup></div>
+                            </div>
+                            <div class="col-2">
+                                <div class="label" style=" width:100%; display:block;text-align:center; font-size:14px">{{svm.settingsdata.marquee.fontcolor}}</div>
+                            </div>
+                            <div class="col-4">
+                                <input id="marquee-fontcolor" value="#FFFFFF">
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-4">
+                                <button ng-click="svm.savemarquee()">Save Settings</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <sup>#</sup>&nbsp;&nbsp;&nbsp;Enter a Hexadecimal value else will be defaulted to black(for background)
+                            and white(for foreground)
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

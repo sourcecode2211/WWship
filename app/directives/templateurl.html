@@ -1,0 +1,10 @@
+<div style="width: 100%;">
+	<input type="text" id="{{identifier}}" name="{{identifier}}" ng-model="model" placeholder="{{prompt}}" ng-keydown="key($event)" style="width: 100%;" />
+	<div class="menu" style="float: left; margin-left: 2px; position: fixed;z-index: 1000; width:auto; padding: 0px; height:auto; overflow-y:auto;margin-top: 2px;max-height:75vh"
+	 ng-hide="!model.length || selected">
+		<div class="item" ng-repeat="item in (filteredBooks = (items | filter:model)) track by $index" ng-click="handleSelection(item[title], item)"
+		 style="cursor:pointer" ng-class="{'bible-menu-item-selected': scrollindex === ($index + 1)}" ng-mouseenter="setCurrent($index)">
+			{{item[title]}}
+		</div>
+	</div>
+</div>

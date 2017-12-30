@@ -1,0 +1,70 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="panel" style="float: left; width: 100%">
+                <div class="header">IMAGES</div>
+                <div class="content" style="padding: 1% 1%; overflow-y: auto; min-height:80vh;height:80vh;">
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="button" class="btn btn-default" ng-click='ivm.select()' style="padding: 5px 20px;">Set Folder path</button>
+                        </div>
+                        <div class="col-4" ng-if="ivm.isEnabled">
+                            <select id="arrangement-id" style="width:100%;">
+                                <option value="" disabled selected>SELECT AN ARRANGEMENT...</option>                                    
+                                <option ng-repeat="arrangement in ivm.arrangements" value="{{arrangement.file}}">{{arrangement.description}}</option>
+                            </select>
+                        </div>
+                        <div class="col-4" ng-if="ivm.isEnabled">
+                            <button ng-click="ivm.addtoarrangement()" style="padding: 0px 25px; height: 24px;">Add to Arrangement</button>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div ng-if="ivm.images.length==0">No images found in this folder</div>
+                            <div ng-repeat="image in ivm.images track by $index" class="row" ng-if="$index % 6 ==0" style="padding-top:25px;">
+                                <div class="col-2">
+                                    <a href="" class="thumbnail" ng-click="ivm.selected(ivm.images[$index])">
+                                        <img ng-src="{{ivm.images[$index]}}" 
+                                        ng-class="{'img-active' : ivm.selectedimage === ivm.images[$index]}"/>
+                                    </a>
+                                </div>
+                                <div class="col-2" ng-if="ivm.images.length > ($index +1)">
+                                    <a href="" class="thumbnail" ng-click="ivm.selected(ivm.images[$index+1])">
+                                        <img ng-src="{{ivm.images[$index+1]}}" 
+                                        ng-class="{'img-active' : ivm.selectedimage === ivm.images[$index+1]}"/>
+                                    </a>
+                                </div>
+                                <div class="col-2" ng-if="ivm.images.length > ($index +2)">
+                                    <a href="" class="thumbnail" ng-click="ivm.selected(ivm.images[$index+2])">
+                                        <img ng-src="{{ivm.images[$index+2]}}" 
+                                        ng-class="{'img-active' : ivm.selectedimage === ivm.images[$index+2]}"/>
+                                    </a>
+                                </div>
+                                <div class="col-2" ng-if="ivm.images.length > ($index +3)">
+                                    <a href="" class="thumbnail" ng-click="ivm.selected(ivm.images[$index+3])">
+                                        <img ng-src="{{ivm.images[$index+3]}}" 
+                                        ng-class="{'img-active' : ivm.selectedimage === ivm.images[$index+3]}"/>
+                                    </a>
+                                </div>
+                                <div class="col-2" ng-if="ivm.images.length > ($index +4)">
+                                    <a href="" class="thumbnail" ng-click="ivm.selected(ivm.images[$index+4])">
+                                        <img ng-src="{{ivm.images[$index+4]}}" 
+                                        ng-class="{'img-active' : ivm.selectedimage === ivm.images[$index+4]}"/>
+                                    </a>
+                                </div>
+                                <div class="col-2" ng-if="ivm.images.length > ($index +5)">
+                                    <a href="" class="thumbnail" ng-click="ivm.selected(ivm.images[$index+5])">
+                                        <img ng-src="{{ivm.images[$index+5]}}" 
+                                        ng-class="{'img-active' : ivm.selectedimage === ivm.images[$index+5]}"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="snackbar"></div>
+</div>

@@ -1,0 +1,366 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-3">
+            <div class="row">
+                <div class="panel" style="float: left;width: 100%">
+                    <div class="header">CREATE NEW / VIEW ARRANGEMENTS</div>
+                    <div class="content" style="padding: 5%;overflow-y: hidden;">
+                        <!-- <div class="label">Add a new arrangement</div> -->
+                        <br/>
+                        <form name="form" novalidate ng-submit="form.input.$valid && submit()">
+                            <!-- <input type="text" ng-model="navm.model" ng-pattern="navm.regex" ng-minlength="5" ng-maxlength="30"  -->
+                            <input type="text" ng-model="navm.model" ng-pattern="navm.regex" ng-minlength="5" maxlength="30" ng-trim="false" placeholder="Enter Arrangement name"
+                                id="input" name="input" style="min-width: 95%;" required><br/>
+                            <div ng-if="!form.input.$valid" class="noselect cursor-default">
+                                <p class="text-danger small-text">Arrangement name is invalid.</p>
+                            </div>
+                            <div ng-if="form.input.$valid" class="noselect cursor-default">
+                                <p class="text-success small-text">Arrangement name is valid !<br/></p>
+                            </div>
+                            <div ng-if="form.input.$valid"></div>
+                            <button style="min-width: 100%;" ng-click="navm.createArrangement()" ng-disabled="!form.input.$valid || !navm.model.length || form.model.$error.required">Create Service Arrangement</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel" style="float: left; max-height: 66vh; height: 66vh; width: 100%">
+                    <div class="header">CURRENT ARRANGEMENTS</div>
+                    <div class="content" style="padding: 2% 5%;overflow-y: auto;">
+                        <ul style="padding-left: 8px;">
+                            <li class="arrangement-item" ng-repeat="arrangement in navm.arrangements" ng-click="navm.viewarrangement(arrangement.file, arrangement.description)"
+                                ng-class="{'arrangement-active' : arrangement.file === navm.selectedpath}">
+                                <div ng-class="{'tick-icon' : arrangement.file === navm.selectedpath}"></div>{{arrangement.description}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="navm.visibilityobj.isArrangementSelected" class="col-4">
+            <div class="tab" style="float: left; min-height: 85vh; width: 100%">
+                <div class="header">
+                    <div class="tab-item " ng-class="{'active': navm.visibilityobj.tabSelected==1}" ng-click="navm.setTab(1)"> SONGS </div>
+                    <div class="tab-item " ng-class="{'active': navm.visibilityobj.tabSelected==2}" ng-click="navm.setTab(2)"> VERSES </div>
+                    <div class="tab-item " ng-class="{'active': navm.visibilityobj.tabSelected==3}" ng-click="navm.setTab(3)"> IMAGES </div>
+                    <div class="tab-item " ng-class="{'active': navm.visibilityobj.tabSelected==5}" ng-click="navm.setTab(5)"> SLIDES </div>
+                </div>
+                <div class="content">
+                    <div ng-if="navm.visibilityobj.isArrangementSelected && navm.visibilityobj.tabSelected == 1" id="songs" class="tab-content active"
+                        style="padding: 5px; overflow-y: auto;">
+                        <div ng-if="navm.songs==undefined || navm.songs.length == 0" style="padding: 30px 40px;">No Songs added to this Arrangement</div>
+                        <ol ng-if="navm.songs.length > 0" style="padding-left:25px">
+                            <li class="song-item" ng-repeat="song in navm.songs track by $index" id="{{$index}}" ng-click="navm.openSong(song.title, song.filepath, $index)"
+                                ng-class="{'song-item-selected' : navm.selecteditem === $index }">{{song.title}}</li>
+                        </ol>
+                    </div>
+                    <div ng-if="navm.visibilityobj.isArrangementSelected && navm.visibilityobj.tabSelected == 2" id="scriptures" class="tab-content active"
+                        style="padding: 5px; overflow-y: auto;">
+                        <div ng-if="navm.scriptures==undefined || navm.scriptures.length == 0" style="padding: 30px 40px;">No Scriptures added to this Arrangement</div>
+                        <ol ng-if="navm.scriptures.length > 0" style="padding: 0px 20px 10px 40px">
+                            <li class="song-item" ng-repeat="scripture in navm.scriptures track by $index" id="{{$index + 10000}}" ng-click="navm.openScripture(scripture.filepath, scripture.verse, scripture.reference, $index)"
+                                ng-class="{'song-item-selected' : navm.selecteditem === ($index + 10000)}">{{scripture.reference}}</li>
+                        </ol>
+                    </div>
+                    <div ng-if="navm.visibilityobj.isArrangementSelected && navm.visibilityobj.tabSelected == 3" id="images" class="tab-content active"
+                        style="padding: 25px; overflow-y: auto;">
+                        <div ng-if="navm.images==undefined || navm.images.length == 0" style="padding: 30px 40px;">No Images added to this Arrangement</div>
+                        <div class="row" ng-repeat="image in navm.images track by $index" style="padding: 10px 0">
+                            <div class="col-3">&nbsp;</div>
+                            <div class="col-3">
+                                <img ng-src="{{image.filepath}}" onerror="this.style.display='none'" ng-click="navm.postimage(image.filepath, $index)" ng-class="{'img-active' : navm.selecteditem === ($index + 20000) }"
+                                />
+                            </div>
+                            <div class="col-3">&nbsp;</div>
+                        </div>
+                    </div>
+                    <!-- <div ng-if="visibilityobj.isArrangementSelected && visibilityobj.tabSelected == 4" id="videos" class="tab-content active"
+                        style="padding: 5px; overflow-y: auto;">
+                        <div ng-if="videos==undefined || videos.length == 0" style="padding: 30px 40px;">No Videos added to this Arrangement</div>
+                    </div>-->
+                    <div ng-if="navm.visibilityobj.isArrangementSelected && navm.visibilityobj.tabSelected == 5" id="slides" class="tab-content active"
+                        style="padding: 5px; overflow-y: auto;">
+                        <div ng-if="navm.slides==undefined || navm.slides.length == 0" style="padding: 30px 40px;">No Slides added to this Arrangement</div>
+                        <div ng-if="navm.slides.length != 0" style="padding: 0px 15px;">{{navm.slides.length}} slide(s) in arrangement</div><br/>
+                        <div ng-if="navm.slides.length > 0" ng-repeat="slide in navm.slides track by $index" class="row" style="border-bottom: 1px solid #333; margin-bottom: 10px;padding-bottom: 10px;">
+                            <div class="col-4">
+                                <img ng-src="assets/slide-templates/Slide{{slide.slidetype}}.png" ng-click="navm.openSlide($index)" ng-class="{'img-active' : navm.visibilityobj.GUID === slide.uuid}"
+                                />
+                            </div>
+                            <div class="col-8">
+                                <div class="slide-item" id="{{$index}}" ng-click="navm.openSlide($index)" 
+                                    style="font-size: 1.5rem;font-weight: 300;padding-left:30px;">{{slide.slidetitle}}</div>
+                                <div ng-if="slide.slidetype ===1">
+                                    <ul style="list-style-type: circle;padding-left:30px;">
+                                        <li ng-repeat="bullet in slide.slidebullets track by $index">{{bullet}}</li>
+                                    </ul>
+                                </div>
+                                <div ng-if="slide.slidetype ===2">
+                                    <ol style="padding-left:30px;">
+                                        <li ng-repeat="bullet in slide.slidebullets track by $index">{{bullet}}</li>
+                                    </ol>
+                                </div>
+                                <!-- <div ng-if="slide.slidetype ===3">
+                                    <img ng-src="{{slide.slideimage}}" style="height:50px!important;width:50px!important;"/>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-switch="navm.visibilityobj.selected">
+            <div ng-switch-when="song">
+                <div class="col-5">
+                    <div class="panel" style="float: left; min-height: 85vh; height: 85vh; width: 100%;">
+                        <div class="header">SONG DETAIL</div>
+                        <div class="row" style="background: #464646;padding: 10px 0;margin-bottom:2px;border-bottom: 1px solid #333;">
+                            <div class="col-12">
+                                <div class="label" style="display: inine-block;">Lines per slide</div>
+                                <div class="btn-group" style="display: inine-block;">
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==1}" ng-click="navm.setLines(1)">&nbsp;1 &nbsp;</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==2}" ng-click="navm.setLines(2)">&nbsp;2 &nbsp;</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==3}" ng-click="navm.setLines(3)">&nbsp;3 &nbsp;</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==4}" ng-click="navm.setLines(4)">&nbsp;4 &nbsp;</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==5}" ng-click="navm.setLines(5)">&nbsp;5 &nbsp;</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==6}" ng-click="navm.setLines(6)">&nbsp;6 &nbsp;</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==7}" ng-click="navm.setLines(7)">&nbsp;7 &nbsp;</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.layout==8}" ng-click="navm.setLines(8)">&nbsp;8 &nbsp;</button>
+                                </div>
+                                <div style="clear:both;"></div><br/>
+                                <div class="label" style="display: inine-block;">Display Orientation</div>
+                                <div class="btn-group" style="display: inine-block;">
+                                    <button ng-if="navm.songdisplay.layout < 3" class="button" ng-class="{'active' : navm.songdisplay.orientation==1}" ng-click="navm.setDisplay(1)">Lower third</button>
+                                    <button class="button" ng-class="{'active' : navm.songdisplay.orientation==3}" ng-click="navm.setDisplay(3)">Full Screen</button>
+                                    <button ng-if="navm.songdisplay.layout < 3" class="button" ng-class="{'active' : navm.songdisplay.orientation==2}" ng-click="navm.setDisplay(2)">Upper Third</button>
+                                </div>
+                                <div style="clear:both;"></div><br/>
+                            </div>
+                        </div>
+                        <div class="content" style="height: auto;overflow-y: auto;">
+                            <div class="song-verses" ng-if="!navm.visibilityobj.iseditmode">
+                                <div class="song-verse-item" 
+                                ng-repeat="songslide in navm.songslides track by $index" 
+                                ng-class="'lyrics-color-verse' + songslide.stanza"
+                                id="songslide-number-{{$index}}">
+                                    <div class="row" style="border-bottom: 2px solid #666;cursor:pointer;"
+                                    ng-class="{'scripture-selected' : $index === navm.visibilityobj.songslideclicked}"
+                                    ng-dblclick="navm.editslide()"
+                                    ng-click="navm.project(songslide.slide, $index)" >
+                                        <div class="col-1">
+                                            {{songslide.indicator ? songslide.stanza + ' >': ''}}
+                                        </div>
+                                        <div class="col-11" style="margin: 2px 5px 2px 5px !important;">
+                                            <div style="padding: 2px 5px 2px 5px;line-height: 1.5;cursor:pointer;font-size: 14px" 
+                                            ng-class="{'scripture-selected' : $index === navm.visibilityobj.songslideclicked}"
+                                            ng-bind-html="navm.showLines(songslide.slide)" 
+                                            ></div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="song-verses" ng-if="navm.visibilityobj.iseditmode" style="padding-left: 15px;">                               
+                                <button ng-click="navm.updatesong(1)">Update Song</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button ng-click="navm.updatesong(0)">Cancel</button>
+                                <br/><br/>
+                                <div class="label">Song Chorus</div><br/>
+                                <textarea id="edit-v0" ng-model="navm.v0"></textarea>
+                                <div class="label">Verse 1</div><br/>
+                                <textarea id="edit-v1" ng-model="navm.v1"></textarea>
+                                <div class="label">Verse 2</div><br/>
+                                <textarea id="edit-v2" ng-model="navm.v2"></textarea>
+                                <div class="label">Verse 3</div><br/>
+                                <textarea id="edit-v3" ng-model="navm.v3"></textarea>
+                                <div class="label">Verse 4</div><br/>
+                                <textarea id="edit-v4" ng-model="navm.v4"></textarea>
+                                <div class="label">Verse 5</div><br/>
+                                <textarea id="edit-v5" ng-model="navm.v5" ></textarea>
+                                <div class="label">Verse 6</div><br/>
+                                <textarea id="edit-v6" ng-model="navm.v6" ></textarea>
+                                <div class="label">Verse 7</div><br/>
+                                <textarea id="edit-v7" ng-model="navm.v7"></textarea>
+                                <br/><br/>
+                                <button ng-click="navm.updatesong(1)">Update Song</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button ng-click="navm.updatesong(0)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-when="scripture">
+                <div class="col-5">
+                    <div class="panel" style="float: left; min-height: 85vh; height: 85vh; width: 100%;">
+                        <div class="header">SCRIPTURE</div>
+                        <div class="content" style="padding: 20px; overflow-y: auto;">
+                            <div class="song-verses">
+                                <div ng-repeat="verse in navm.verses track by $index" class="song-verse-item">
+                                    <h4 style="margin-top: 10px;margin-bottom: 2px;font-size: 16px; color: #5bc0de;text-transform: uppercase;" id="verse-{{$index + 1}}">{{verse.reference}}</h4>
+                                    <div class="list-group bottom-margin-10">
+                                        <p class="list-group-item" ng-repeat="slide in verse.slides track by $index" ng-click="navm.slideselected(slide, verse.reference, $parent.$index, $index)"
+                                            ng-class="{'scripture-selected': $parent.$index === navm.visibilityobj.verseclicked && $index === navm.visibilityobj.slideclicked }">{{slide}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-when="slides">
+                <div class="col-5" ng-show="navm.visibilityobj.mode === 0">
+                    <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                        <div class="header">SLIDE CONTENTS</div>
+                        <div class="content" style="padding: 2% 5%;overflow-y: auto;">
+                            <div ng-show="navm.slidelayout === 1">
+                                <div class="label">
+                                    <h1>Title with Unordered List</h1>
+                                </div>
+                                <!-- <div class="label">
+                                    <h3>Enter each Bullet point in a separate line in the text area below</h3>
+                                </div><br/> -->
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                                    </div>
+                                    <div class="col-10">
+                                        <input style="width:100%; min-width:100%" id="slide1-title" placeholder="Enter Slide Title..">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Bullet Points</div>
+                                    </div>
+                                    <div class="col-10">
+                                        <textarea style="width:100%; min-width:100%; height:250px; min-height:250px" id="slide1-bullets"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">&nbsp;</div>
+                                    <div class="col-3">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.preview(1)">Project Slide</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.updatearrangement(1)">Update Arrangement</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="navm.slidelayout === 2">
+                                <div class="label">
+                                    <h1>Title with Ordered List</h1>
+                                </div>
+                                <!-- <div class="label">
+                                    <h3>Enter each Bullet point in a separate line in the text area below</h3>
+                                </div><br/> -->
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                                    </div>
+                                    <div class="col-10">
+                                        <input style="width:100%; min-width:100%" id="slide2-title" placeholder="Enter Slide Title..">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Bullet Points</div>
+                                    </div>
+                                    <div class="col-10">
+                                        <textarea style="width:100%; min-width:100%; height:250px; min-height:250px" id="slide2-bullets"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">&nbsp;</div>
+                                    <div class="col-3">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.preview(2)">Project Slide</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.updatearrangement(2)">Update Arrangement</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="navm.slidelayout === 3">
+                                <div class="label">
+                                    <h1>Title + Image</h1>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                                    </div>
+                                    <div class="col-10">
+                                        <input style="width:100%; min-width:100%" id="slide3-title" placeholder="Enter Slide Title..">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Image URL</div>
+                                    </div>
+                                    <div class="col-7">
+                                        <input disabled style="width:100%; min-width:100%" id="image" placeholder="URL ...">
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="button" class="btn btn-default" ng-click='navm.select()' style="padding: 0px 25px; height: 24px; width:100%">Set path</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">&nbsp;</div>
+                                    <div class="col-3">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.preview()">Project Slide</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.updatearrangement(3)">Update Arrangement</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="navm.slidelayout === 4">
+                                <div class="label">
+                                    <h1>Title Only</h1>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                                    </div>
+                                    <div class="col-10">
+                                        <input style="width:100%; min-width:100%" id="slide4-title" placeholder="Enter Slide Title..">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">&nbsp;</div>
+                                    <div class="col-3">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.preview(4)">Project Slide</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.updatearrangement(4)">Update Arrangement</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="navm.slidelayout === 5">
+                                <div class="label">
+                                    <h1>Title Only</h1>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="label" style=" width:100%; display:block;text-align:right; font-size:16px">Title</div>
+                                    </div>
+                                    <div class="col-10">
+                                        <input style="width:100%; min-width:100%" id="slide5-title" placeholder="Enter Slide Title..">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">&nbsp;</div>
+                                    <div class="col-3">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.preview(5)">Project Slide</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button style="margin: 0 5px; padding: 2px 10px;" ng-click="navm.updatearrangement(5)">Update Arrangement</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-default>
+            </div>
+        </div>
+    </div>
+    <div id="snackbar"></div>
+</div>

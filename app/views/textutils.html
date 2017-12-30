@@ -1,0 +1,29 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-6">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">TEXT UTILITIES</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <div class="label">Enter Text below to be transformed</div><br/>
+                    <textarea rows="20" id="v0" ng-model="tvm.v0"
+                    ng-virtual-keyboard="{kt: 'US International', showKbSelect: true, numberPad: true, showVersion: false,relative: false}"></textarea>
+                    <br/><br/><br/>
+                    <label class="radio"><input ng-click="tvm.convert_tscii_2_unicode();" name="source_type" value="this.value&quot;" type="radio">TAMIL ASCII</label><br>	
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="panel" style="float: left; max-height: 85vh; height: 85vh; width: 100%">
+                <div class="header">TRANSFORMED TEXT</div>
+                <div class="content" style="padding: 5%;overflow-y: auto;">
+                    <div class="label">Transformed Text</div><br/>
+                    <textarea rows="20" id="v1" ng-model="tvm.v1"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            
+          

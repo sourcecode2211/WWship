@@ -1,0 +1,40 @@
+{
+  "name": "word-and-worship",
+  "version": "1.0.0",
+  "description": "Church Lyrics, Scripture and Media Projection software built with AngularJS and Electron",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Electron",
+    "Angularjs",
+    "Church",
+    "Display",
+    "Projection"
+  ],
+  "author": "Jeffrey Philip Xavier",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.13",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.0.0",
+    "http-server": "^0.9.0",
+    "pump": "^1.0.1"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "latest",
+    "angular": "^1.6.6",
+    "angular-route": "^1.6.5",
+    "angular-sanitize": "^1.6.5",
+    "angular-selectize": "0.0.1",
+    "extract-zip": "=1.6.5",
+    "find-in-files": "^0.4.0",
+    "http-server": "^0.9.0",
+    "jsonfile": "^3.0.1",
+    "ui-select": "^0.19.8",
+    "get-video-info":"1.0.0"
+  }
+}

@@ -1,0 +1,66 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="panel" style="float: left; width: 100%; height: 15vh; min-height:15vh; padding: 5px 5px;">
+            <div class="header">FIND SCRIPTURE</div>
+            <div class="content" style="padding: 1% 1%;overflow-y: hidden;">
+                <div class="row" style="padding:0px 0px !important; margin:0px 0px!important;overflow-y: hidden;">
+                    <div class="col-4">
+                        <select ng-model="bvm.bibleversion" style="width: 100%">
+                            <option value="" disabled selected>SELECT BIBLE TRANSLATION..</option>                                    
+                            <option ng-repeat="version in bvm.bibleversions" value="{{version.dir}}">{{version.version}}</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <bibletypeaheadbook focus="true" identifier="bookname" items="bvm.booksofthebible" prompt="Name of bible book..." title="book" subtitle="id" model="bvm.book"
+                            selectedobj="bvm.selectedbook" on-select="bvm.onBookSelected()" />
+                    </div>
+                    <div class="col-1">
+                        <bibletypeaheadchapter identifier="chapternumber" items="bvm.chaps" prompt="Chapter" title="chapter" model="bvm.chapter" selectedobj="bvm.selectedchapter"
+                            on-select="bvm.onChapSelected()" />
+                    </div>
+                    <div class="col-1">
+                        <bibletypeaheadverse identifier="versenumber" items="bvm.versesinchaps" prompt="Verse" title="verse" model="bvm.versevalue" selectedobj="bvm.selectedverse"
+                            on-select="bvm.onVerseSelected()" />
+                    </div>
+                    <!-- <div class="col-1">
+                        <button style="min-width: 100%;" ng-click="bvm.select()">Locate</button>
+                        <div class="project-btn" ng-click="bvm.select()">Locate</div> 
+                    </div> -->
+                    <div class="col-2" style="float:left!important;">
+                        <!-- <button style="min-width: 100%;" ng-click="bvm.clear()">Clear</button> -->
+                        <div class="quit-btn" ng-click="bvm.clear()">Clear</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4" ng-show="bvm.showarrangementlines">
+                        <select id="arrangement-id" style="width:100%;">
+                                <option value="" disabled selected>SELECT AN ARRANGEMENT...</option>                                    
+                                <option ng-repeat="arrangement in bvm.arrangements" value="{{arrangement.file}}">{{arrangement.description}}</option>
+                            </select>
+                    </div>
+                    <div class="col-5" ng-show="bvm.showarrangementlines">
+                        <button ng-click="bvm.addtoarrangement()" style="padding: 0px 25px; height: 24px;">Add to Arrangement</button>
+                    </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div style="width:100%; height:70vh; min-height:70vh;overflow-y:auto; margin: 0px 5px;background:#555; padding-top:10px">
+            <div class="content" style="padding: 5px 20px 35px;">
+                <div class="song-verses" >
+                    <div ng-repeat="verse in bvm.verses track by $index" class="song-verse-item">
+                        <h4 style="margin-top: 10px;margin-bottom: 2px;font-size: 16px; color: #5bc0de;text-transform: uppercase;" id="verse-{{$index +1}}">{{verse.reference}}</h4>
+                        <div class="list-group bottom-margin-10">
+                            <p class="list-group-item" ng-repeat="slide in verse.slides track by $index" ng-click="bvm.slideselected(slide, verse.reference, $parent.$index, $index)"
+                                ng-class="{'scripture-selected': $parent.$index === bvm.visibilityobj.verseclicked && $index === bvm.visibilityobj.slideclicked }"
+                                id="Verse{{$parent.$index + 1}}-Slide{{$index + 1}}">{{slide}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="snackbar"></div>
+</div>

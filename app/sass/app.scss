@@ -1,0 +1,21 @@
+$red: darkred;
+$royalblue: royalblue;
+$opensans: 'Open Sans';
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body {
+    font-family: $opensans;
+}
+
+nav {
+    background-color: $royalblue;
+    ul li {
+        display: inline;
+    }
+}
+
+.active {
+    color: $red;
+    font-weight: bold;
+}

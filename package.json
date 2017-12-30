@@ -1,0 +1,50 @@
+{
+  "name": "ww-windows",
+  "private": false,
+  "version": "0.0.1",
+  "main": "main.js",
+  "description": "Church Projection Software built using Electron and Angularjs",
+  "repository": "https://github.com/jeffreypxavier/word-and-worship",
+  "license": "MIT",
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron": "1.7.10",
+    "electron-reload": "^1.2.2",
+    "extract-zip": "=1.6.5",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-clean-css": "^2.0.13",
+    "gulp-concat": "^2.6.1",
+    "gulp-concat-css": "^2.3.0",
+    "gulp-inject": "^4.3.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.1.2",
+    "gulp-util": "^3.0.8",
+    "http-server": "^0.9.0",
+    "pump": "^1.0.1"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build:linux": "electron-builder dist --platform=linux --out dist/ --config=config.json",
+    "pkg:linux": "electron-packager . \"Team Hours\" --platform=linux --arch=x64 --version=0.36.7 --overwrite --asar=true --icon=icons/icon.png --out=dist --ignore=dist"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "latest",
+    "angucomplete-alt": "^3.0.0",
+    "angular": "1.6.4",
+    "angular-hotkeys": "^1.7.0",
+    "angular-popeye": "^1.0.5",
+    "angular-route": "^1.6.5",
+    "angular-sanitize": "^1.6.5",
+    "angular-virtual-keyboard": "0.4.3",
+    "electron-builder": "^19.49.2",
+    "find-in-files": "^0.4.0",
+    "get-video-duration": "^0.2.0",
+    "get-video-info": "^1.0.0",
+    "jsonfile": "^3.0.1",
+    "ui-select": "^0.19.8",
+    "vjs-video": "^0.1.10"
+  }
+}

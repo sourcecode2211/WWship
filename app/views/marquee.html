@@ -1,0 +1,25 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="panel" style="float: left; min-height: 85vh; width: 100%">
+                <div class="header">TICKER / MARQUEE SCROLLBAR</div>
+                <div class="content" style="padding: 20px 20px;overflow-y: auto;">
+                    <div class="row">
+                        <div class="btn-group">
+                            <button ng-class="mvm.isLayout==1 ? 'button active' : 'button'" ng-click='mvm.layout(1)'>Bottom of the Page</button>
+                            <button ng-class="mvm.isLayout==3 ? 'button active' : 'button'" ng-click='mvm.layout(3)'>Top of the Page</button>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <div class="row">
+                        <textarea ng-model="mvm.scrolltext" class="form-control" placeholder="Enter Marquee Scroll Text..."></textarea>
+                    </div>
+                    <br/><br/>
+                    <div class="row">
+                        <button class="btn btn-large btn-primary" style="padding: 2px 20px; height: 26px;" ng-click="mvm.displayMarquee()">Display on Projector</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

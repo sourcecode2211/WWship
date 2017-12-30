@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Lyrics Display</title>
+  <!-- themes -->
+  <!--<link rel="stylesheet" href="../../css/normalize.css" />-->
+  <style>
+    /*@font-face {
+    font-family: MyriadPro;
+    /*src: url('../../fonts/MyriadProRegular.ttf'); GOTHAM-LIGHT */
+    /*src: url('../../fonts/CenturyGothic.ttf'); }*/
+
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;
+      user-select: none; 
+      cursor: none;
+    }
+    /* HTML5 display-role reset for older browsers */
+
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+      display: block;
+    }
+
+    body {
+      line-height: 1;
+    }
+
+    ol,
+    ul {
+      list-style: none;
+    }
+
+    blockquote,
+    q {
+      quotes: none;
+    }
+
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+      content: '';
+      content: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    html {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'Arial', 'Helvetica', 'sans-serif';
+      font: 36px Arial, sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .ww-overall-container {
+      padding-left: 2vh;
+      padding-right: 3vh;
+      padding-top: 2vh;
+      padding-bottom: 3vh;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .ww-lyrics-full-screen {
+      background: transparent;
+      position: relative;
+      float: left;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 36px;
+      z-index: 99;
+    }
+
+    .ww-lyrics-upper-third {
+      background: transparent;
+      position: fixed;
+      float: left;
+      top: 0;
+      left: 0;
+      height: 30vh;
+      max-height: 30vh;
+      width: 100vw;
+      text-align: center;
+      z-index: 9;
+      padding-top: 10px;
+      font-size: 30px;
+    }
+
+    .ww-lyrics-lower-third {
+      background: transparent;
+      position: fixed;
+      float: left;
+      bottom: 0;
+      left: 0;
+      height: 30vh;
+      max-height: 30vh;
+      width: 100vw;
+      text-align: center;
+      z-index: 9;
+      padding-bottom: 10px;
+      font-size: 30px;
+    }
+
+    p.ls-uppercase {
+      font-size: 56px;
+      color: #fff;
+      text-align: center;
+      line-height: 1.1em;
+    }
+
+    p.fs-uppercase {
+      font-size: 70px;
+      color: #fff;
+      text-align: center;
+      line-height: 1.1em;
+    }
+
+    p.lowercase {
+      text-transform: lowercase;
+    }
+
+    p.capitalize {
+      margin-right: 50px;
+      margin-bottom: 25px;
+      color: #fff;
+      /*font-size: 58px;*/
+    }
+
+    .center-div {
+      width: 100vw;
+      display: table-cell;
+      vertical-align: middle;
+      color: white;
+      text-shadow: -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000;
+    }
+
+    .align-to-bottom {
+      position: absolute;
+      bottom: 0;
+      padding-bottom: 2vh;
+    }
+
+    .align-to-top {
+      position: absolute;
+      top: 0;
+    }
+
+    .align-to-center {
+      position: absolute;
+      bottom: 0;
+    }
+  </style>
+  <!-- <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+</head>
+
+<body>
+  <div class="ww-overall-container">
+    <div class="ww-lyrics-full-screen">
+      <!--<h1 class="fs-uppercase center-div" id="full-screen">Word & Worship v1.0</h1>-->
+      <p class="fs-uppercase center-div" id="fs1"><strong>Word & Worship v1.0</strong><br/>If you are able to read this on your projection screen, your app has started successfully!!!</p>
+    </div>
+    <!--<div class="ww-lyrics-upper-third">
+      <p class="ls-uppercase center-div" id="upper-third">Just a placeholder</p>
+    </div>
+    <div class="ww-lyrics-lower-third">
+      <p class="ls-uppercase center-div align-to-bottom" id="lower-third">Lorem ipsum dolor </p>
+    </div>-->
+  </div>
+</body>
+
+</html>

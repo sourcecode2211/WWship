@@ -1,0 +1,42 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="panel" style="float: left; width: 100%">
+                <div class="header">VIDEO</div>
+                <div class="content" style="padding: 1% 1%;overflow-y: auto; height:80vh; min-height:80vh;">
+                    <div class="row">
+                        <div class="col-3">
+                            <button type="button" 
+                            class="btn btn-default" 
+                            ng-click='vvm.select()'
+                            style="padding: 5px 20px;">Set Videos Folder path</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <ul class="list-group">
+                                <li class="list-group-item" 
+                                ng-repeat="videofile in vvm.videos track by $index" 
+                                ng-click="vvm.selectedVideo($index)" 
+                                ng-class="{'active': $index === vvm.selectedVideoTrack}">
+                                    {{videofile.description}}
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <div class="col-8" ng-show="vvm.isEnabled">
+                            <div class="row">
+                                <h3>{{vvm.vidtitle}}</h3>
+                            </div>
+                            <div class="row">
+                                <figure id="videoContainer" data-fullscreen="false">
+                                        <video id="preview" name="preview" ng-src="{{vvm.videoplay}}" controls />
+                                </figure>
+                            </div>
+                            
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

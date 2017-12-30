@@ -1,0 +1,23 @@
+<div class="content" style="padding: 20px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="panel" style="float: left; min-height: 85vh; width: 100%">
+                <div class="header">EMBEDDED BROWSER</div>
+                <div class="content" style="padding: 20px 20px;overflow-y: auto;">
+                    <div class="row">
+                        <div class="col-10">
+                            <input ng-model="brvm.url" type="text"  style="min-width: 98%;height: 24px;"  />
+                        </div>
+                        <div class="col-2">
+                                <button class="btn btn-large btn-primary" style="padding: 2px 20px; height: 26px;" ng-click="brvm.viewpage()">Go To Webpage</button>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <div ng-if="brvm.clicked"class="row">
+                        <iframe width="800" height="400" ng-src="{{detailFrame}}"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

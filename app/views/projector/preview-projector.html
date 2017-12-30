@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Word & Worship Projector</title>
+  <style>
+
+    html, body, div, p, audio, video { 
+	margin: 0; 
+	padding: 0; 
+	border: 0; 
+	font-size: 100%; 
+	font: inherit; 
+	vertical-align: baseline; 
+	user-select: none; 
+	cursor: none; 
+	} 
+	html {
+	height: 100%;
+	width: 100%;
+	font-family: 'Segoe UI', 'Helvetica', 'sans-serif' !important;
+	color: #fff;
+	font-size: 60px;
+	}
+	.align-to-bottom {
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 5vh;
+	}
+	body {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	}
+	.ww-overall-container {
+		padding-left: 5vw;
+		padding-right: 5vw;
+		padding-top: 5vh;
+		padding-bottom: 5vh;
+		height: 90vh;
+		width: 90vw;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		background: transparent;
+		z-index: 1;
+	}
+	.ww-upper-marquee {
+	top: 5px;
+	position: fixed;
+	height: 6.6vh;
+	width: 98.5vw;
+	color: #fff;
+	z-index: 10;
+	padding-top: 5vh;
+	}
+	.ww-lower-marquee {
+	bottom: 5vh;
+	position: fixed;
+	height: 10vh;
+	width: 98.5vw;
+	color: #fff;
+	z-index: 10;
+	}
+	.ww-lyrics-full-screen {
+	background: transparent;
+	position: relative;
+	float: left;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	z-index: 20;
+	word-wrap: break-word;
+	}
+	.ww-lyrics-upper-third {
+	background: transparent;
+	position: fixed;
+	float: left;
+	top: 0;
+	left: 0;
+	height: 35vh;
+	max-height: 35vh;
+	width: 90vw;
+	text-align: center;
+	z-index: 9;
+	padding-top: 5vh;
+	padding-left: 5vw;
+	padding-right: 5vw;
+	z-index: 20;
+	word-wrap: break-word;
+	font-family: 'Segoe UI', 'Helvetica', 'sans-serif';
+	font-weight: 600;
+	/* line-height: 125%; */
+	}
+	.ww-lyrics-lower-third {
+	background: transparent;
+	position: fixed;
+	float: left;
+	bottom: 0;
+	left: 0;
+	height: 35vh;
+	max-height: 35vh;
+	width: 100vw;
+	text-align: center;
+	z-index: 20;
+	padding-bottom: 10px;
+	word-wrap: break-word;
+	font-family: 'Segoe UI', 'Helvetica', 'sans-serif';
+	font-weight: 600;
+	/* line-height: 125%; */
+	}
+	.align-to-bottom {
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 8vh;
+	}
+	.align-to-top {
+	position: absolute;
+	top: 0;
+	}
+	.align-to-center {
+	position: absolute;
+	bottom: 0;
+	}
+	.center-div {
+	width: 100vw;
+	display: table-cell;
+	vertical-align: middle;
+	color: white;
+	text-shadow: 1px 1px 4px black;
+	z-index: 20;
+	text-align: center;
+	}
+	.ww-verse-reference {
+	padding: 2px;
+	height: 10vh;
+	position: fixed;
+	bottom: 30px;
+	left: 0;
+	width: 90vw;
+	z-index: 20;
+	vertical-align: text-bottom;
+	color: #fff;
+	} 
+	p.reference {
+	float: right;
+	margin-right: 50px;
+	margin-bottom: 15px;
+	}
+	:-webkit-full-screen #video {
+	width: 100%;
+	height: 100%;
+	}
+	video::-webkit-media-controls {
+	display:none !important;
+	}
+	.video {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	}
+	.photo {
+	position: relative;
+	height: 100vh;
+	z-index: 50;
+	}
+	img {
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+	width: auto;
+	height: auto;
+	-webkit-transform: translate3d(0, 0, 0);
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	max-height: 90vh;
+	max-width: 90vw;
+	z-index: 50;
+	}
+  </style>
+  <script language="javascript">
+
+  (function () {
+
+    const ipcRenderer = require('electron').ipcRenderer;
+	
+	var currentState="welcome", vdo,imagedom, upperMarquee, lowerMarquee, fullScreen, upperThird, lowerThird, verseReference;
+	
+	var scripturestyling, lyricstyling, imagestyling, marqueestyling, slidestyling ,slideul="<ul>",slideol="<ol>",bullets="";
+  
+    var tid = setInterval(function () {
+      if (document.readyState !== 'complete') return;
+      clearInterval(tid);
+	  vdo = document.getElementById('video');
+	  imagedom = document.getElementById('image');
+	  upperMarquee = document.getElementById('upper-marquee');
+	  lowerMarquee = document.getElementById('lower-marquee');
+	  fullScreen = document.getElementById('full-screen');
+	  upperThird = document.getElementById('upper-third');
+	  lowerThird = document.getElementById('lower-third');
+	  verseReference = document.getElementById('reference');
+	 //loadstyling(); 
+      ipcRenderer.send('preview-window-loaded');   
+    }, 100);
+
+    function resetPage() {
+      upperMarquee.innerHTML = '';
+	  lowerMarquee.innerHTML = '';
+	  fullScreen.innerHTML = '';
+	  upperThird.innerHTML = '';
+	  lowerThird.innerHTML = '';
+	  verseReference.innerHTML = '';
+	  if (!vdo.paused) {
+		vdo.pause();
+	  }
+	  vdo.style.display = 'none';
+	  imagedom.style.display = 'none';
+    }
+	
+	function setBgColor(bgColor) {
+       document.body.style.backgroundColor = bgColor;
+    }
+
+    function setFontColor(domElement, fontColor) {
+      domElement.style.color = fontColor;
+    }
+	
+	function setTextCase(domElement, textTrans) {
+      domElement.style.textTransform = textTrans;
+    }
+
+    function setFontSize(domElement, size) {
+      domElement.style.fontSize = size;
+    }
+
+    function playVideo(url) {
+	  vdo.style.display = 'initial';
+	  vdo.src = url;
+	  vdo.load();
+      vdo.play();
+    }
+	
+	function displayImage(url) {
+		imagedom.src = url;
+		imagedom.style.display = "initial";
+	};
+	
+	function loadDataAndStyling(type, incomingstyles, incomingdata) {
+		switch (type) {
+			case 0: // Welcome
+				for (var k in incomingstyles) scripturestyling[k]=incomingstyles[k];
+				setBgColor(scripturestyling.bgcolor);
+				setFontColor(fullScreen, scripturestyling.fontcolor);
+				setFontSize(fullScreen, scripturestyling.fontsize);
+				setTextCase(fullScreen, scripturestyling.textTransform);
+				fullScreen.innerHTML = incomingdata.displaytext;
+			break;
+			case 1: // Scripture Display
+				//if (scripturestyling.GUID != incomingstyles.GUID) {
+					for(var k in incomingstyles) scripturestyling[k]=incomingstyles[k];
+					setBgColor(scripturestyling.bgcolor);
+					setFontColor(fullScreen, scripturestyling.fontcolor);
+					setFontSize(fullScreen, scripturestyling.fontsize);
+					setTextCase(fullScreen, scripturestyling.textTransform);
+				//}
+				fullScreen.style.textAlign  = "left";
+				fullScreen.style.paddingLeft = "50px";
+				fullScreen.style.paddingRight = "50px";
+				fullScreen.innerHTML = incomingdata.displaytext;
+				verseReference.innerHTML = incomingdata.reference;
+			break;
+			case 2: // Lyrics Display in Lower Third
+				//if (lyricstyling.GUID != incomingstyles.GUID) {
+					for(var k in incomingstyles) lyricstyling[k]=incomingstyles[k];
+					setBgColor(lyricstyling.bgcolor);
+					setFontColor(lowerThird, lyricstyling.fontcolor);
+					setFontSize(lowerThird, lyricstyling.fontsize);
+					setTextCase(lowerThird, lyricstyling.textTransform);
+				//}
+				lowerThird.innerHTML = incomingdata.displaytext;
+			break;
+			case 3: // Lyrics Display in Upper Third
+				//if (lyricstyling.GUID != incomingstyles.GUID) {
+					for(var k in incomingstyles) lyricstyling[k]=incomingstyles[k];
+					setBgColor(lyricstyling.bgcolor);
+					setFontColor(upperThird, lyricstyling.fontcolor);
+					setFontSize(upperThird, lyricstyling.fontsize);
+					setTextCase(upperThird, lyricstyling.textTransform);
+				//}
+				upperThird.innerHTML = incomingdata.displaytext;
+			break;
+			case 4: // Lyrics Display in Full Screen Mode
+				//if (lyricstyling.GUID != incomingstyles.GUID) {
+					for(var k in incomingstyles) lyricstyling[k]=incomingstyles[k];
+					setBgColor(lyricstyling.bgcolor);
+					setFontColor(fullScreen, lyricstyling.fontcolor);
+					setFontSize(fullScreen, lyricstyling.fontsize);
+					setTextCase(fullScreen, lyricstyling.textTransform);
+				//}
+				fullScreen.innerHTML = incomingdata.displaytext;
+				fullScreen.style.textAlign  = "center";
+				fullScreen.style.paddingLeft = "10px";
+				fullScreen.style.paddingRight = "10px";
+			break;
+			case 5: // Marquee Display in Upper Third
+				for(var k in incomingstyles) marqueestyling[k]=incomingstyles[k];
+				setBgColor(marqueestyling.bgcolor);
+				setFontColor(upperMarquee, marqueestyling.fontcolor);
+				setFontSize(upperMarquee, marqueestyling.fontsize);
+				setTextCase(upperMarquee, marqueestyling.textTransform);
+				upperMarquee.innerHTML = incomingdata.displaytext;
+			break;
+			case 6: // Marquee Display in Lower Third
+				for(var k in incomingstyles) marqueestyling[k]=incomingstyles[k];
+				setBgColor(marqueestyling.bgcolor);
+				setFontColor(lowerMarquee, marqueestyling.fontcolor);
+				setFontSize(lowerMarquee, marqueestyling.fontsize);
+				setTextCase(lowerMarquee, marqueestyling.textTransform);
+				lowerMarquee.innerHTML = incomingdata.displaytext;
+			break;
+			case 7: // Image Display Full Screen
+				//if (imagestyling.GUID != incomingstyles.GUID) {
+					for(var k in incomingstyles) imagestyling[k]=incomingstyles[k];
+					setBgColor(imagestyling.bgcolor);
+				//}
+				displayImage(incomingdata.url);
+			break;
+			case 8: // Video Display Full Screen
+				playVideo(incomingdata.url);
+			break;
+			case 9: // Slide Display Unordered List
+				setBgColor(slidestyling.bgcolor);
+				setFontSize(upperThird, slidestyling.fontTitle);
+				setTextCase(upperThird, slidestyling.textTransform);
+				setFontColor(fullScreen, slidestyling.fontcolor);
+				setFontSize(fullScreen, slidestyling.fontBullets);		
+				fullScreen.style.textAlign  = "left";
+				fullScreen.style.fontSize = "60px";
+				fullScreen.style.paddingLeft = "50px";
+				fullScreen.style.paddingRight = "50px";
+				upperThird.innerHTML = incomingdata.displaytext;
+				//console.log(incomingdata);
+				var lines = incomingdata.reference.replace(/\n+/g, '\n');
+				var bullets = lines.split("\n");
+				var list="<ul>";
+				bullets.forEach(function (item, index) {
+					list = list + "<li>"+item+"</li>";
+				});
+				list = list + "</ul>";
+				fullScreen.innerHTML = list;
+				
+			break;
+			case 10: // Slide Display Ordered List
+				setBgColor(slidestyling.bgcolor);
+				setFontSize(upperThird, slidestyling.fontTitle);
+				setTextCase(upperThird, slidestyling.textTransform);
+				setFontColor(fullScreen, slidestyling.fontcolor);
+				setFontSize(fullScreen, slidestyling.fontBullets);		
+				fullScreen.style.textAlign  = "left";
+				fullScreen.style.paddingLeft = "50px";
+				fullScreen.style.paddingRight = "50px";
+				fullScreen.style.fontSize = "60px";
+				upperThird.innerHTML = incomingdata.displaytext;
+				//console.log(incomingdata);
+				var lines = incomingdata.reference.replace(/\n+/g, '\n');
+				var bullets = lines.split("\n");
+				var list="<ol>";
+				bullets.forEach(function (item, index) {
+					list = list + "<li>"+item+"</li>";
+				});
+				list = list + "</ol>";
+				fullScreen.innerHTML = list;
+			break;
+			case 11: // Slide Display Image
+			break;
+			case 12: // Slide Display Title only Upper
+				setBgColor(slidestyling.bgcolor);
+				setFontSize(upperThird, slidestyling.fontTitle);
+				setTextCase(upperThird, slidestyling.textTransform);
+				setFontColor(fullScreen, slidestyling.fontcolor);
+				setFontSize(fullScreen, slidestyling.fontBullets);		
+				fullScreen.style.textAlign  = "left";
+				fullScreen.style.paddingLeft = "50px";
+				fullScreen.style.paddingRight = "50px";
+				upperThird.innerHTML = incomingdata.displaytext;
+			break;
+			case 13: // Slide Display Title only Lower
+				setBgColor(slidestyling.bgcolor);
+				setFontSize(upperThird, slidestyling.fontTitle);
+				setTextCase(upperThird, slidestyling.textTransform);
+				setFontColor(fullScreen, slidestyling.fontcolor);
+				setFontSize(fullScreen, slidestyling.fontBullets);		
+				fullScreen.style.textAlign  = "left";
+				fullScreen.style.paddingLeft = "50px";
+				fullScreen.style.paddingRight = "50px";
+				lowerThird.innerHTML = incomingdata.displaytext;
+			break;
+		}
+	};
+	
+	function dataParser(arg) {
+		switch (arg.data.datatype.toUpperCase()) {
+			case "WELCOME":
+				loadDataAndStyling(0, arg.styling, arg.data);
+			break;
+			case "SCRIPTURE":
+				loadDataAndStyling(1, arg.styling, arg.data);
+			break;
+			case "LOWERTHIRD":
+				loadDataAndStyling(2, arg.styling, arg.data);
+			break;
+			case "UPPERTHIRD":
+				loadDataAndStyling(3, arg.styling, arg.data);
+			break;
+			case "FULLSCREEN":
+				loadDataAndStyling(4, arg.styling, arg.data);
+			break;
+			case "UPPERMARQUEE":
+				loadDataAndStyling(5, arg.styling, arg.data);
+			break;
+			case "LOWERMARQUEE":
+				loadDataAndStyling(6, arg.styling, arg.data);
+			break;
+			case "DISPLAYIMAGE":
+				loadDataAndStyling(7, "NA", arg.data);
+			break;
+			case "PLAYVIDEO":
+				loadDataAndStyling(8, "NA", arg.data);
+			break;
+			case "SLIDES-1":
+				loadDataAndStyling(9, "NA", arg.data);
+			break;
+			case "SLIDES-2":
+				loadDataAndStyling(10, "NA", arg.data);
+			break;
+			case "SLIDES-3":
+				loadDataAndStyling(11, "NA", arg.data);
+			break;
+			case "SLIDES-4":
+				loadDataAndStyling(12, "NA", arg.data);
+			break;
+			case "SLIDES-5":
+				loadDataAndStyling(13, "NA", arg.data);
+			break;
+		};
+	};
+
+	ipcRenderer.on('send-initial-payload', function(event,arg) {
+		//console.log(arg);
+		scripturestyling = arg.styling.scripture;
+		lyricstyling= arg.styling.lyrics;
+		imagestyling= arg.styling.image; 
+		marqueestyling= arg.styling.marquee;
+		slidestyling = arg.styling.slides;
+		dataParser(arg);
+	});
+	
+	ipcRenderer.on('send-payload', function(event,arg) {
+		//console.log(arg);
+		resetPage();
+		dataParser(arg);
+	});
+	
+	ipcRenderer.on('move-track-forward', function (event, arg) {
+		if (!vdo.paused)
+		vdo.currentTime +=arg.time
+	});
+
+	ipcRenderer.on('move-track-backward', function (event, arg) {
+		if (!vdo.paused)
+		vdo.currentTime -=arg.time
+	});
+
+	ipcRenderer.on('projection-stop', function (event, arg) {
+		resetPage();
+	});
+
+  })();
+    
+  </script>
+</head>
+
+<body id="body-full">
+  
+  <div class="photo">
+    <img id="image" src="" alt="" />
+  </div>
+  <div class="ww-overall-container">
+    <div class="ww-upper-marquee">
+      <marquee scrollamount="15" id="upper-marquee"></marquee>
+    </div>
+    <div class="ww-lower-marquee">
+      <marquee scrollamount="15" id="lower-marquee"></marquee>
+    </div>
+    <div class="ww-lyrics-full-screen">
+      <p class="fs-uppercase center-div" id="full-screen"></p>
+    </div>
+    <div class="ww-lyrics-upper-third">
+      <p class="ls-uppercase center-div" id="upper-third"></p>
+    </div>
+    <div class="ww-lyrics-lower-third">
+	  <p class="ls-uppercase align-to-bottom center-div" id="lower-third"></p>
+	</div>
+    <div class="ww-verse-reference">
+      <p class="reference" id="reference"></p>
+    </div>
+  </div>
+  <video no-controls class="video" id="video" src=""></video>
+</body>
+
+</html>

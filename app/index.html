@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Word & Worship</title>
+
+  
+  <link rel="stylesheet" href="../node_modules/angular-virtual-keyboard/release/angular-virtual-keyboard.css">
+  <link rel="stylesheet" href="../node_modules/angular-popeye/release/popeye.min.css">
+  <link rel="stylesheet" href="css/grid.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+
+  <script src="../node_modules/angular/angular.js"></script>
+  <script src="../node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="../node_modules/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+
+
+  <script src="app.js"></script>
+  <script src="controllers/home.controller.js"></script>
+  <script src="controllers/marquee.controller.js"></script>
+  <script src="controllers/arrangement.controller.js"></script>
+  <script src="controllers/bible.controller.js"></script>
+  <script src="controllers/lyrics.controller.js"></script>
+  <!-- <script src="controllers/settings.controller.js"></script> -->
+  <script src="controllers/media.controller.js"></script>
+  <script src="controllers/textutils.controller.js"></script>
+  <script src="directives/bible.directive.js"></script>
+
+
+  <script src="services/home.service.js"></script>
+  <script src="services/ipc.services.js"></script>
+  <script src="services/state.service.js"></script>
+  <script src="../node_modules/angular-virtual-keyboard/release/angular-virtual-keyboard.min.js"></script>
+  <script src="../node_modules/angular-hotkeys/build/hotkeys.min.js"></script>
+
+
+</head>
+
+<body ng-app="myApp" class="noselect">
+  <div class="workspace" ng-controller="bodyController" >
+    <div ng-include="'views/shell.html'"></div>
+  <ui-view></ui-view>
+  </div>
+</body>

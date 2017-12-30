@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Word & Worship preview</title>
+  <style>
+
+    html, body, div, p, audio, video { 
+	margin: 0; 
+	padding: 0; 
+	border: 0; 
+	font-size: 100%; 
+	font: inherit; 
+	vertical-align: baseline; 
+	user-select: none; 
+	cursor: none; 
+	} 
+	html {
+	background-color: #222;
+	height: 100%;
+	width: 100%;
+	font-family: 'Arial', 'Helvetica', 'sans-serif';
+	color: #fff;
+	font-size: 60px;
+	}
+	.align-to-bottom {
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 2vh;
+	}
+	body {
+	background: transparent;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	}
+	.ww-overall-container {
+	padding-left: 1vh;
+	padding-right: 1vh;
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+	height: 95vh;
+	width: 98vw;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #555;
+	z-index : 1;
+	}
+	.ww-upper-marquee {
+	top: 5px;
+	position: fixed;
+	height: 60px;
+	width: 98.5vw;
+	color: #fff;
+	z-index: 10;
+	}
+	.ww-lower-marquee {
+	bottom: 0px;
+	position: fixed;
+	height: 60px;
+	width: 98.5vw;
+	color: #fff;
+	z-index: 10;
+	}
+	.ww-lyrics-full-screen {
+	background: transparent;
+	position: relative;
+	float: left;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	z-index: 20;
+	word-wrap: break-word;
+	}
+	.ww-lyrics-upper-third {
+	background: transparent;
+	position: fixed;
+	float: left;
+	top: 0;
+	left: 0;
+	height: 30vh;
+	max-height: 30vh;
+	width: 90vw;
+	text-align: center;
+	z-index: 9;
+	padding-top: 10px;
+	padding-left: 5vw;
+	padding-right: 5vw;
+	z-index: 20;
+	word-wrap: break-word;
+	}
+	.ww-lyrics-lower-third {
+	background: transparent;
+	position: fixed;
+	float: left;
+	bottom: 0;
+	left: 0;
+	height: 30vh;
+	max-height: 30vh;
+	width: 100vw;
+	text-align: center;
+	z-index: 20;
+	padding-bottom: 10px;
+	word-wrap: break-word;
+	}
+	.align-to-bottom {
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 2vh;
+	}
+	.align-to-top {
+	position: absolute;
+	top: 0;
+	}
+	.align-to-center {
+	position: absolute;
+	bottom: 0;
+	}
+	.center-div {
+	width: 100vw;
+	display: table-cell;
+	vertical-align: middle;
+	color: white;
+	text-shadow: -2px -2px 0 #000,
+	2px -2px 0 #000,
+	-2px 2px 0 #000,
+	2px 2px 0 #000;
+	z-index: 20;
+	}
+	.ww-verse-reference {
+	padding: 2px;
+	height: 10vh;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100vw;
+	z-index: 20;
+	vertical-align: text-bottom;
+	color: #fff;
+	} 
+	p.reference {
+	float: right;
+	margin-right: 50px;
+	margin-bottom: 15px;
+	}
+	:-webkit-full-screen #video {
+	width: 100%;
+	height: 100%;
+	}
+	video::-webkit-media-controls {
+	display:none !important;
+	}
+	.video {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	}
+	.photo {
+	position: relative;
+	height: 100vh;
+	z-index: 50;
+	}
+	img {
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+	width: auto;
+	height: auto;
+	-webkit-transform: translate3d(0, 0, 0);
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	max-height: 90vh;
+	max-width: 90vw;
+	z-index: 50;
+	}
+  </style>
+  <script language="javascript">
+
+  (function () {
+
+    // const ipcRenderer = require('electron').ipcRenderer;
+
+    var refLength, verseLength, fontSize, vdo;
+
+    
+
+    var tid = setInterval(function () {
+      if (document.readyState !== 'complete') return;
+      clearInterval(tid);
+      ipcRenderer.send('projection-window-loaded');
+      //nullifyalltext();
+      vdo = document.getElementById('video');
+      //vdo.addEventListener("play", fullScreen);
+      //setFontColor('upper-marquee', '#f00');
+      //setFontSize('upper-marquee', '100px');
+      //playVideo();
+    }, 500);
+
+	
+    ipcRenderer.on('projector-display-verse', function (event, arg) {
+		hideAllVisible(3);
+		nullifyalltext();
+		document.getElementById('reference').innerHTML = arg.verse.reference;
+		document.getElementById('full-screen').innerHTML = arg.verse.slides[arg.showslide];
+		document.getElementById('reference').style.visibility = "visible";
+		document.getElementById('full-screen').style.visibility = "visible";
+	});
+	
+	ipcRenderer.on('projector-display-song', function (event, arg) {
+		hideAllVisible(2);
+		nullifyalltext();
+		document.getElementById('full-screen').style.visibility = "visible";
+		document.getElementById('upper-third').style.visibility = "visible";
+		document.getElementById('lower-third').style.visibility = "visible";
+		
+	});
+	
+	ipcRenderer.on('projector-display-marquee', function (event, arg) {
+		hideAllVisible(4);
+		nullifyalltext();
+		document.getElementById('upper-marquee').style.visibility = "visible";
+		document.getElementById('lower-marquee').style.visibility = "visible";
+	});
+	
+	ipcRenderer.on('projector-display-video', function (event, arg) {
+		hideAllVisible(1);
+		nullifyalltext();
+		document.getElementById('upper-marquee').style.visibility = "visible";
+		document.getElementById('lower-marquee').style.visibility = "visible";
+	});
+
+
+    function nullifyalltext() {
+      document.getElementById('upper-marquee').innerHTML = '';
+      document.getElementById('lower-marquee').innerHTML = '';
+      document.getElementById('full-screen').innerHTML = '';
+      document.getElementById('upper-third').innerHTML = '';
+      document.getElementById('lower-third').innerHTML = '';
+      document.getElementById('reference').innerHTML = '';
+    }
+	
+	function hideAllVisible(typeofcontent) {
+		switch(typeofcontent) {
+			case 1: //For Video Display Scenario
+				document.getElementById('upper-marquee').style.visibility = "hidden";
+				document.getElementById('lower-marquee').style.visibility = "hidden";
+				document.getElementById('full-screen').style.visibility = "hidden";
+				document.getElementById('upper-third').style.visibility = "hidden";
+				document.getElementById('lower-third').style.visibility = "hidden";
+				document.getElementById('reference').style.visibility = "hidden";
+				break;
+			case 2: // For Song Display
+				document.getElementById('upper-marquee').style.visibility = "hidden";
+				document.getElementById('lower-marquee').style.visibility = "hidden";
+				document.getElementById('reference').style.visibility = "hidden";
+				document.getElementById('video').style.visibility = "hidden";
+				break;
+			case 3: // For Scripture Display
+				document.getElementById('video').style.visibility = "hidden";
+				document.getElementById('upper-marquee').style.visibility = "hidden";
+				document.getElementById('lower-marquee').style.visibility = "hidden";
+				document.getElementById('upper-third').style.visibility = "hidden";
+				document.getElementById('lower-third').style.visibility = "hidden";
+				break;
+			case 4: // For Marquee
+				document.getElementById('video').style.visibility = "hidden";
+				document.getElementById('full-screen').style.visibility = "hidden";
+				document.getElementById('upper-third').style.visibility = "hidden";
+				document.getElementById('lower-third').style.visibility = "hidden";
+				document.getElementById('reference').style.visibility = "hidden";
+				break;
+		};
+		
+	};
+
+    function setFontColor(id, color) {
+      document.getElementById(id).style.color = color;
+    }
+
+    function setFontSize(id, size) {
+      document.getElementById(id).style.fontSize = size;
+    }
+
+    function playVideo() {
+      vdo.play();
+    }
+
+  })();
+    
+  </script>
+</head>
+
+<body>
+  <video no-controls class="video" id="video" src="video.webm" />
+  <div class="photo">
+    <img id="image" src="" alt="" />
+  </div>
+  <div class="ww-overall-container">
+    <div class="ww-upper-marquee">
+      <marquee scrollamount="15" id="upper-marquee"></marquee>
+    </div>
+    <div class="ww-lower-marquee">
+      <marquee scrollamount="15" id="lower-marquee"></marquee>
+    </div>
+    <div class="ww-lyrics-full-screen">
+      <p class="fs-uppercase center-div" id="full-screen"></p>
+    </div>
+    <div class="ww-lyrics-upper-third">
+      <p class="ls-uppercase center-div" id="upper-third"></p>
+    </div>
+    <div class="ww-lyrics-lower-third">
+    </div>
+      <p class="ls-uppercase align-to-bottom center-div" id="lower-third"></p>
+    <div class="ww-verse-reference">
+      <p class="reference" id="reference"></p>
+    </div>
+  </div>
+</body>
+
+</html>
